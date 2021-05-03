@@ -1,4 +1,5 @@
 import React, {useReducer} from 'react'
+// import {Button} from 'reactstrap'
 
 function Calculator() {
     // const initialState = {
@@ -31,6 +32,7 @@ function Calculator() {
             <div>
                 Count: {count}
             </div>
+        {/* <Button></Button> */}
         </div>
     )
 }
