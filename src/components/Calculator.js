@@ -7,6 +7,7 @@ function Calculator() {
     const [evaluation, setEvaluation] = useState(0)
     const [action, setAction] = useState("")
     const [values, setValues] = useState([""])
+    const [displayExpression, setDisplayExpression] = useState(0)
 
     let evaluate = (arr, operand) => {
         switch (operand) {
@@ -23,9 +24,16 @@ function Calculator() {
         }
     }
 
+    // CURRENT PROBLEM: USING HOOKS INSIDE IF STATEMENTS IS CAUSING INFINITE LOOP
     useEffect(() => {
         if(expression.match("[0-9]")){
-            values.length < 2 ? values[0] += expression : values[1] += expression
+            if(values.length < 2){
+                values[0] += expression
+                // setDisplayExpression(values[0])
+            }else{
+                values[1] += expression
+                // setDisplayExpression(values[1])
+            }
         }else{ // if +-x/=
 
             if(expression == "="){
@@ -36,7 +44,8 @@ function Calculator() {
                     /////////// evaluate with value[0] action value[0] and setEvaluation SAVE FOR LATER
 
                     // evaluate and setEvaluation
-                    setEvaluation(evaluate(values, action))
+                    // setDisplayExpression(evaluate(values, action))
+                    setEvaluation(displayExpression)
                     
                 }
                 // reset expression, action, and values to default
@@ -46,10 +55,11 @@ function Calculator() {
                 
             }else if(action != "" && expression.match("\\+|-|x|\\/")){
                 // replace action with expression
+                setAction(expression)
             }else if(action == "" && expression.match("\\+|-|x|\\/")){
                 // action == "" so we must assign action and add a new string to values
-                // setAction(expression)
-                // setValues([...values, ""])
+                setAction(expression)
+                setValues([...values, ""])
             }
 
 
@@ -79,7 +89,7 @@ function Calculator() {
             <Table className="col-2 offset-5" borderless>
                 <thead>
                     <tr>
-                        <th colSpan="4" className="bg-dark text-light text-right">{evaluation}</th>
+                        <th colSpan="4" className="bg-dark text-light text-right">{displayExpression}</th>
                     </tr>
                 </thead>
                 <tbody>
